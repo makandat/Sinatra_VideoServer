@@ -1,15 +1,11 @@
 #!/usr/bin/env ruby
-#  ビデオサーバ v2.1
+#  ビデオサーバ v2.0
 require "sinatra"
 require "cgi"
 
-# 最初の１回だけ実行される。
-configure do
-  #set :bind, '0.0.0.0'
-  #set :port, 9090
-  set :environment, :production
-  puts "<<< Sinatra ビデオサーバ v2.1 >>>"
-end
+#set :bind, '0.0.0.0'
+#set :port, 9090
+set :environment, :production
 
 # ヘルパメソッドの定義
 helpers do
@@ -49,16 +45,14 @@ get "/mp4/:filename" do
   folders = get_folders
   # そのファイルが存在するか確認
   folders.each do |folder|
-    #puts folder
-    path = folder
-    path.tr!("\\", "/") if RUBY_PLATFORM =~ /win32|mingw|cygwin/
-    path << "/#{filename}"
+    puts folder
+    path = folder.tr!("\\", "/") + "/" + filename
     if FileTest.exist?(path)
-      puts "Send: " + path
-      send_file path, :disposition => 'inline', :type => 'video/mp4'
+        puts "Send: " + path
+        send_file path, :disposition => 'inline', :type => 'video/mp4'
       return
-    #else
-    #  puts "Skiped: " + path
+    else
+      puts "Skiped: " + path
     end
   end
 end
@@ -77,7 +71,7 @@ get "/folder" do
   folder = params[:dir]
   files = Dir.entries(folder)
   files.each do |file|
-    if file[0] == '.' || File.extname(file) != ".mp4"
+    if file[0] == '.'
       next
     end
     @files += "<li><a href=\"/mp4/#{file}\" target=\"_blank\">#{file}</a></li>\n"
