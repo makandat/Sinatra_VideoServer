@@ -2,26 +2,27 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Sinatra ビデオサーバ</title>
+    <title>Sinatra ビデオサーバ v2.2</title>
     <link rel="stylesheet" href="style.css" />
     <script>
       function video_display() {
         let filename = document.getElementById("filename")
-        location.href = "/mp4/" + filename.value
+        location.href = "/path?path=" + filename.value
       }
     </script>
   </head>
 
   <body>
     <article>
-      <h1>Sinatra ビデオサーバ</h1>
+      <h1>Sinatra ビデオサーバ v2.2</h1>
       <p><a href="/">[ CLEAR ]</a></p>
       <form action="javascript:video_display()">
-        <div class="form_row"><label>Video file (.mp4) <input type="text" id="filename" size="100"></label></div>
+        <div class="form_row"><label>Video file (.mp4) <input type="text" id="filename" size="100" value="<%= @path %>"></label></div>
         <div class="form_row"><button> Display video </button></div>
       </form>
+      <div class="m-2 text-danger"><%= @message %></div>
       <h3 style="color:deepskyblue;">Help</h3>
-      <p>テキストボックス "Video file (.mp4)" には mp4 ファイルのみ入力可能。これはファイル名のみで、ディレクトリは "folders.txt" で指定する。</p>
+      <p>テキストボックス "Video file (.mp4)" には mp4 ファイルのみ入力可能。これはフルパスで folders.txt は使用しない。</p>
       <p>"folders.txt" には複数のディレクトリを指定可能で、最初にディレクトリ + "/" + ファイル名が実在した場合、そのファイルが再生される。<br />
 このサーバの "folders.txt" の具体的な場所は C:\workspace\Web\Sinatra\2025\video_server\folders.txt である。</p>
       <h3 style="color:deepskyblue;">folders.txt</h3>
